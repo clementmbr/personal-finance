@@ -1,0 +1,1 @@
+Analyse bank statement lines with categories and pivot, graph views

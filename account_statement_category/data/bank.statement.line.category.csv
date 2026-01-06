@@ -1,0 +1,51 @@
+id,name,sequence,is_expense,parent_id/id
+cat_quotidien,Quotidien,10,1,
+sub_resto,Restaurant,11,1,cat_quotidien
+sub_sortie,Sortie,12,1,cat_quotidien
+sub_supermarche,Supermarché,13,1,cat_quotidien
+sub_vetement,Vêtement,14,1,cat_quotidien
+sub_cadeau,Cadeau,15,1,cat_quotidien
+cat_sante,Santé,20,1,
+sub_pharmacie,Pharmacie,21,1,cat_sante
+sub_docteur,Docteur,22,1,cat_sante
+sub_mutuelle,Mutuelle,23,1,cat_sante
+cat_transport,Transport,30,1,
+sub_voyage,Voyage,31,1,cat_transport
+sub_taxi,Taxi,32,1,cat_transport
+sub_metro_velo,Métro & Vélo,33,1,cat_transport
+sub_voiture,Voiture,34,1,cat_transport
+sub_essence_peage,Essence & Péage,35,1,cat_transport
+cat_logement,Logement,40,1,
+sub_loyer,Loyer,41,1,cat_logement
+sub_charges,Charges,42,1,cat_logement
+sub_equipement_maison,Équipement Maison,43,1,cat_logement
+sub_internet,Internet,44,1,cat_logement
+sub_telephone,Téléphone,45,1,cat_logement
+cat_admin,Administratif,50,1,
+sub_banque,Frais Bancaires,51,1,cat_admin
+sub_impots_perso,Impôts Personnels,52,1,cat_admin
+sub_visa,Visa,53,1,cat_admin
+cat_windsurf,Windsurf,60,1,
+sub_matos_wind,Matériel Wind,61,1,cat_windsurf
+sub_entretien_wind,Entretien Wind,62,1,cat_windsurf
+cat_virement,Virement,70,1,
+sub_livret_a,Livret A,71,1,cat_virement
+sub_amis,Remboursement Amis,72,1,cat_virement
+sub_nubank,Nubank Bill,73,1,cat_virement
+sub_fr_br,FR > BR,74,1,cat_virement
+sub_wise,Wise,75,1,cat_virement
+sub_epargne,Épargne,76,1,cat_virement
+cat_technobrass,TechnoBrass,80,0,
+sub_tournee,Tournée,81,0,cat_technobrass
+sub_caisse,Caisse,82,0,cat_technobrass
+cat_music,Musique,90,0,
+sub_ulysse,Ulysse,91,0,cat_music
+sub_tb_musique,TechnoBrass (Revenu),92,0,cat_music
+sub_concerts,Concerts,93,0,cat_music
+sub_sacem,SACEM,94,0,cat_music
+sub_france_travail,France Travail,95,0,cat_music
+sub_matos_musique,Matériel Musique,96,0,cat_music
+cat_akretion,Akretion,100,0,
+sub_facture_dev,Facture Dév,101,0,cat_akretion
+sub_urssaf,URSSAF,102,0,cat_akretion
+sub_impots_pro,Impôts Pro,103,0,cat_akretion

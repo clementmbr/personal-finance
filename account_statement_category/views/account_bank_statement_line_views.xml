@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_bank_statement_line_list_personal" model="ir.ui.view">
+        <field name="name">account.bank.statement.line.list.personal</field>
+        <field name="model">account.bank.statement.line</field>
+        <field name="arch" type="xml">
+            <list string="Statement Lines" editable="bottom" create="false">
+                <!-- TODO: add attribute "js_class" to put button "Import Statement"
+                above this list -->
+                <field name="date" />
+                <field name="payment_ref" />
+                <field name="category_color" widget="color" string=" " readonly="1" />
+                <field name="category_id" string="Category" force_save="1" />
+                <field name="subcategory_id" string="Sub-Category" />
+                <field name="is_expense" column_invisible="True" />
+                <field name="amount" sum="Total" />
+                <field name="currency_id" optional="show" />
+            </list>
+        </field>
+    </record>
+
+    <record id="view_bank_statement_line_pivot_personal" model="ir.ui.view">
+        <field name="name">account.bank.statement.line.pivot.personal</field>
+        <field name="model">account.bank.statement.line</field>
+        <field name="arch" type="xml">
+            <pivot string="Financial Analysis" display_quantity="false">
+                <field name="category_id" type="row" />
+                <field name="subcategory_id" type="row" />
+                <field name="date" interval="month" type="col" />
+                <field name="amount" type="measure" />
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_bank_statement_line_graph_personal" model="ir.ui.view">
+        <field name="name">account.bank.statement.line.graph.personal</field>
+        <field name="model">account.bank.statement.line</field>
+        <field name="arch" type="xml">
+            <graph string="Flux Analysis" type="bar" sample="1" stacked="True">
+                <field name="category_id" />
+                <field name="amount" type="measure" />
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_bank_statement_line_search_personal" model="ir.ui.view">
+        <field name="name">account.bank.statement.line.search.personal</field>
+        <field name="model">account.bank.statement.line</field>
+        <field name="arch" type="xml">
+            <search string="Search Statement Lines">
+                <field name="payment_ref" />
+                <field name="category_id" />
+                <field name="subcategory_id" />
+                <filter
+                    string="💸 Expenses"
+                    name="filter_expenses"
+                    domain="[('is_expense', '=', True)]"
+                />
+                <filter
+                    string="💰 Revenues"
+                    name="filter_revenues"
+                    domain="[('is_expense', '=', False)]"
+                />
+                <group expand="1" string="Group By">
+                    <filter
+                        string="Category"
+                        name="group_by_category"
+                        context="{'group_by': 'category_id'}"
+                    />
+                    <filter
+                        string="Sub-Category"
+                        name="group_by_subcategory"
+                        context="{'group_by': 'subcategory_id'}"
+                    />
+                    <filter
+                        string="Month"
+                        name="group_by_month"
+                        context="{'group_by': 'date:month'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_personal_statement_line" model="ir.actions.act_window">
+        <field name="name">My Finances</field>
+        <field name="res_model">account.bank.statement.line</field>
+        <field name="view_mode">list,pivot,graph,form</field>
+        <field name="view_id" ref="view_bank_statement_line_list_personal" />
+        <field name="search_view_id" ref="view_bank_statement_line_search_personal" />
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Click on the <b>Import Statement</b> button to start.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_personal_finance_root"
+        name="My Finances"
+        sequence="1"
+        web_icon="account_statement_category,static/description/icon.png"
+    />
+
+    <menuitem
+        id="menu_finance_analysis"
+        name="Analysis"
+        parent="menu_personal_finance_root"
+        action="action_personal_statement_line"
+        sequence="10"
+    />
+
+    <record id="account_statement_import_menu" model="ir.ui.menu">
+        <field name="name">Import Statement</field>
+        <field name="parent_id" ref="menu_personal_finance_root" />
+        <field
+            name="action"
+            ref="account_statement_import_file.account_statement_import_action"
+        />
+        <field name="sequence" eval="20" />
+    </record>
+
+    <menuitem
+        id="menu_finance_config"
+        name="Configuration"
+        parent="menu_personal_finance_root"
+        sequence="100"
+    />
+
+    <menuitem
+        id="menu_personal_categories"
+        name="Categories"
+        parent="menu_finance_config"
+        action="action_bank_statement_line_category"
+    />
+</odoo>
