@@ -73,8 +73,8 @@
                         context="{'group_by': 'subcategory_id'}"
                     />
                     <filter
-                        string="Month"
-                        name="group_by_month"
+                        string="Date"
+                        name="group_by_date"
                         context="{'group_by': 'date:month'}"
                     />
                 </group>
@@ -103,34 +103,32 @@
     />
 
     <menuitem
-        id="menu_finance_analysis"
-        name="Analysis"
+        id="menu_statement_lines"
+        name="Statement Lines"
         parent="menu_personal_finance_root"
         action="action_personal_statement_line"
         sequence="10"
     />
 
-    <record id="account_statement_import_menu" model="ir.ui.menu">
-        <field name="name">Import Statement</field>
-        <field name="parent_id" ref="menu_personal_finance_root" />
-        <field
-            name="action"
-            ref="account_statement_import_file.account_statement_import_action"
-        />
-        <field name="sequence" eval="20" />
-    </record>
+    <menuitem
+        id="menu_statement_import"
+        name="Import Statement"
+        parent="menu_personal_finance_root"
+        action="account_statement_import_file.account_statement_import_action"
+        sequence="20"
+    />
 
     <menuitem
-        id="menu_finance_config"
+        id="menu_personal_finance_config"
         name="Configuration"
         parent="menu_personal_finance_root"
         sequence="100"
     />
 
     <menuitem
-        id="menu_personal_categories"
+        id="menu_personal_finance_categories"
         name="Categories"
-        parent="menu_finance_config"
+        parent="menu_personal_finance_config"
         action="action_bank_statement_line_category"
     />
 </odoo>
