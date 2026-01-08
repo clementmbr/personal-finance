@@ -1,8 +1,10 @@
 # Copyright 2026 Akretion France (http://www.akretion.com/)
 # Licence LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl-3.0).
 
-from odoo.tests.common import TransactionCase
 from datetime import date
+
+from odoo import Command
+from odoo.tests.common import TransactionCase
 
 
 class TestAccountStatementReport(TransactionCase):
@@ -11,7 +13,10 @@ class TestAccountStatementReport(TransactionCase):
         self.eur = self.env.ref("base.EUR")
         self.brl = self.env.ref("base.BRL")
         self.brl.active = True
+        self.eur.active = True
         self.company = self.env.company
+
+        # 1. Create BRL Journal
         self.journal_brl = self.env["account.journal"].create(
             {
                 "name": "BRL Bank",
@@ -20,22 +25,24 @@ class TestAccountStatementReport(TransactionCase):
                 "currency_id": self.brl.id,
             }
         )
+
+        # 2. Setup Rates (BRL rate changes in March)
         self.env["res.currency.rate"].create(
             [
                 {
-                    "name": "2024-01-01",
+                    "name": "2025-01-01",
                     "rate": 1.0,
                     "currency_id": self.eur.id,
                     "company_id": self.company.id,
                 },
                 {
-                    "name": "2024-01-01",
+                    "name": "2025-01-01",
                     "rate": 5.0,
                     "currency_id": self.brl.id,
                     "company_id": self.company.id,
                 },
                 {
-                    "name": "2024-03-01",
+                    "name": "2025-03-01",
                     "rate": 6.0,
                     "currency_id": self.brl.id,
                     "company_id": self.company.id,
@@ -43,29 +50,54 @@ class TestAccountStatementReport(TransactionCase):
             ]
         )
 
-    def _create_statement_line(self, amount, date_str):
-        line = self.env["account.bank.statement.line"].create(
+        # 3. Create Statement with lines (Jan and March)
+        self.statement = self.env["account.bank.statement"].create(
             {
-                "date": date_str,
-                "journal_id": self.journal_brl.id,
-                "amount": amount,
-                "payment_ref": "Test",
+                "name": "Test Statement 2024",
+                "line_ids": [
+                    Command.create(
+                        {
+                            "date": "2025-01-15",
+                            "amount": 100.0,
+                            "payment_ref": "Opening",
+                            "journal_id": self.journal_brl.id,
+                        }
+                    ),
+                    Command.create(
+                        {
+                            "date": "2025-03-10",
+                            "amount": 50.0,
+                            "payment_ref": "March Deposit",
+                            "journal_id": self.journal_brl.id,
+                        }
+                    ),
+                ],
             }
         )
-        line.move_id.action_post()
-        return line
 
     def test_report_propagation(self):
-        self._create_statement_line(100, "2024-01-15")
-        self._create_statement_line(50, "2024-03-10")
+        self.statement.line_ids._compute_running_balance()
+        self.env.invalidate_all()
+
         results = self.env["account.statement.balance.report"].search(
             [("journal_id", "=", self.journal_brl.id)], order="date asc"
         )
-        jan = results.filtered(lambda r: r.date == date(2024, 1, 31))
-        feb = results.filtered(lambda r: r.date == date(2024, 2, 29))
-        mar = results.filtered(lambda r: r.date == date(2024, 3, 31))
+
+        nov = results.filtered(lambda r: r.date == date(2024, 11, 30))
+        jan = results.filtered(lambda r: r.date == date(2025, 1, 31))
+        feb = results.filtered(lambda r: r.date == date(2025, 2, 28))
+        mar = results.filtered(lambda r: r.date == date(2025, 3, 31))
+
+        self.assertEqual(nov.balance, 0)
+
+        # Jan: 100 BRL / 5.0 = 20 EUR
         self.assertEqual(jan.balance, 100.0)
         self.assertEqual(jan.balance_eur, 20.0)
+
+        # Feb: Propagated 100 BRL / 5.0 (still Jan rate) = 20 EUR
         self.assertEqual(feb.balance, 100.0)
+        self.assertEqual(feb.balance_eur, 20.0)
+
+        # Mar: 150 BRL (100+50) / 6.0 = 25 EUR
         self.assertEqual(mar.balance, 150.0)
         self.assertEqual(mar.balance_eur, 25.0)

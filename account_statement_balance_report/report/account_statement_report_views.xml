@@ -3,10 +3,10 @@
         <field name="model">account.statement.balance.report</field>
         <field name="arch" type="xml">
             <pivot string="Monthly Balances" sample="1">
-                <field name="journal_id" type="row"/>
-                <field name="date" interval="month" type="col"/>
-                <field name="balance_eur" type="measure"/>
-                <field name="balance_brl" type="measure"/>
+                <field name="journal_id" type="row" />
+                <field name="date" interval="month" type="col" />
+                <field name="balance_eur" type="measure" />
+                <field name="balance_brl" type="measure" />
             </pivot>
         </field>
     </record>
@@ -14,9 +14,9 @@
         <field name="model">account.statement.balance.report</field>
         <field name="arch" type="xml">
             <graph string="Balances Evolution" type="line" sample="1" stacked="True">
-                <field name="date" interval="month"/>
-                <field name="balance_eur" type="measure"/>
-                <field name="balance_brl" type="measure"/>
+                <field name="date" interval="month" />
+                <field name="balance_eur" type="measure" />
+                <field name="balance_brl" type="measure" />
             </graph>
         </field>
     </record>
@@ -26,7 +26,11 @@
         <field name="view_mode">pivot,graph</field>
         <field name="context">{'pivot_measures': ['balance_eur', 'balance_brl']}</field>
     </record>
-    <menuitem id="menu_account_statement_report" name="Monthly Balances"
-              action="action_account_statement_report"
-              parent="account_statement_category.menu_personal_finance_root" sequence="30"/>
+    <menuitem
+        id="menu_account_statement_report"
+        name="Monthly Balances"
+        action="action_account_statement_report"
+        parent="account_statement_category.menu_personal_finance_root"
+        sequence="30"
+    />
 </odoo>
