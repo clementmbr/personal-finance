@@ -93,6 +93,8 @@
         </field>
     </record>
 
+    <!-- Useful menus and actions -->
+
     <record id="action_personal_statement_line" model="ir.actions.act_window">
         <field name="name">My Finances</field>
         <field name="res_model">account.bank.statement.line</field>
@@ -106,11 +108,88 @@
         </field>
     </record>
 
+    <record id="action_personal_bank_journal_dashboard" model="ir.actions.act_window">
+        <field name="name">Bank Dashboard</field>
+        <field name="res_model">account.journal</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="view_id" ref="account.account_journal_dashboard_kanban_view" />
+        <field name="domain">[('type', '=', 'bank')]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Manage your bank journals.
+            </p>
+        </field>
+    </record>
+
+    <record id="view_currency_rate_list_personal" model="ir.ui.view">
+        <field name="name">res.currency.rate.list.personal</field>
+        <field name="model">res.currency.rate</field>
+        <field name="arch" type="xml">
+            <list editable="bottom" default_order="name desc" expand="1" import="1">
+                <field name="name" />
+                <field name="currency_id" />
+                <field name="company_id" groups="base.group_multi_company" />
+                <field name="company_rate" digits="[12,12]" />
+                <field name="inverse_company_rate" digits="[12,12]" />
+                <field name="rate" digits="[12,12]" optional="hide" />
+                <field name="write_date" optional="hide" />
+            </list>
+        </field>
+    </record>
+
+    <record id="view_currency_rate_search_personal" model="ir.ui.view">
+        <field name="name">res.currency.rate.search.personal</field>
+        <field name="model">res.currency.rate</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="currency_id" />
+                <filter
+                    string="EUR"
+                    name="filter_eur"
+                    domain="[('currency_id.name', '=', 'EUR')]"
+                />
+                <filter
+                    string="BRL"
+                    name="filter_brl"
+                    domain="[('currency_id.name', '=', 'BRL')]"
+                />
+                <group expand="1" string="Group By">
+                    <filter
+                        string="Currency"
+                        name="group_by_currency_id"
+                        context="{'group_by': 'currency_id'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_personal_currency_rates" model="ir.actions.act_window">
+        <field name="name">Currency Rates</field>
+        <field name="res_model">res.currency.rate</field>
+        <field name="view_mode">list,form</field>
+        <field name="view_id" ref="view_currency_rate_list_personal" />
+        <field name="search_view_id" ref="view_currency_rate_search_personal" />
+        <field name="context">{
+            'search_default_filter_eur': 1,
+            'search_default_filter_brl': 1,
+            'search_default_group_by_currency_id': 1
+        }</field>
+    </record>
+
     <menuitem
         id="menu_personal_finance_root"
         name="My Finances"
         sequence="1"
         web_icon="account_statement_category,static/description/icon.png"
+    />
+
+    <menuitem
+        id="menu_personal_bank_journal_dashboard"
+        name="Bank Accounts"
+        parent="menu_personal_finance_root"
+        action="action_personal_bank_journal_dashboard"
+        sequence="5"
     />
 
     <menuitem
@@ -141,5 +220,53 @@
         name="Categories"
         parent="menu_personal_finance_config"
         action="action_bank_statement_line_category"
+        sequence="10"
+    />
+
+    <menuitem
+        id="menu_personal_account_journal"
+        name="Journals"
+        parent="menu_personal_finance_config"
+        action="account.action_account_journal_form"
+        sequence="20"
+    />
+
+    <menuitem
+        id="menu_personal_currencies"
+        name="Currencies"
+        parent="menu_personal_finance_config"
+        action="base.action_currency_form"
+        sequence="30"
+    />
+
+    <menuitem
+        id="menu_personal_currency_rates"
+        name="Exchange Rates"
+        parent="menu_personal_finance_config"
+        action="action_personal_currency_rates"
+        sequence="40"
+    />
+
+    <menuitem
+        id="account_banks_menu_personal"
+        name="Banks"
+        parent="menu_personal_finance_config"
+        sequence="50"
+    />
+
+    <menuitem
+        id="menu_personal_new_bank_account"
+        name="Add a Bank Account"
+        parent="account_banks_menu_personal"
+        action="account.action_new_bank_setting"
+        sequence="10"
+    />
+
+    <menuitem
+        id="menu_personal_res_partner_bank"
+        name="Bank Accounts"
+        parent="account_banks_menu_personal"
+        action="base.action_res_partner_bank_account_form"
+        sequence="20"
     />
 </odoo>
