@@ -7,6 +7,7 @@
             <list string="Statement Lines" editable="bottom" create="false">
                 <!-- TODO: add attribute "js_class" to put button "Import Statement"
                 above this list -->
+                <field name="journal_id" />
                 <field name="date" />
                 <field name="payment_ref" />
                 <field name="category_color" widget="color" string=" " readonly="1" />
@@ -75,7 +76,17 @@
                     <filter
                         string="Date"
                         name="group_by_date"
-                        context="{'group_by': 'date:month'}"
+                        context="{'group_by': 'date'}"
+                    />
+                    <filter
+                        string="Statement"
+                        name="group_by_statement"
+                        context="{'group_by': 'statement_id'}"
+                    />
+                    <filter
+                        string="Journal"
+                        name="group_by_journal"
+                        context="{'group_by': 'journal_id'}"
                     />
                 </group>
             </search>

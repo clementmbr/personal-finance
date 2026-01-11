@@ -1,0 +1,47 @@
+<odoo>
+    <record id="view_account_statement_report_pivot_inherit" model="ir.ui.view">
+        <field name="name">account.statement.report.pivot.inherit</field>
+        <field name="model">account.statement.balance.report</field>
+        <field
+            name="inherit_id"
+            ref="account_statement_balance_report.view_account_statement_report_pivot"
+        />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='balance']" position="after">
+                <field name="balance_eur" type="measure" />
+                <field name="balance_brl" type="measure" />
+            </xpath>
+            <xpath expr="//field[@name='balance']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_account_statement_report_graph_inherit" model="ir.ui.view">
+        <field name="name">account.statement.report.graph.inherit</field>
+        <field name="model">account.statement.balance.report</field>
+        <field
+            name="inherit_id"
+            ref="account_statement_balance_report.view_account_statement_report_graph"
+        />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='balance']" position="after">
+                <field name="balance_eur" type="measure" />
+                <field name="balance_brl" type="measure" />
+            </xpath>
+            <xpath expr="//field[@name='balance']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record
+        id="account_statement_balance_report.action_account_statement_report"
+        model="ir.actions.act_window"
+    >
+        <field name="context">{
+            'pivot_measures': ['balance_eur'],
+            'search_default_last_year': 1
+        }</field>
+    </record>
+</odoo>
