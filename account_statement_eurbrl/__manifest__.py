@@ -12,6 +12,9 @@
         "account_statement_balance_report",
         "account_statement_category",
     ],
-    "data": ["report/account_statement_balance_report.xml"],
+    "data": [
+        "views/account_bank_statement_line_views.xml",
+        "report/account_statement_balance_report.xml",
+    ],
     "demo": [],
 }

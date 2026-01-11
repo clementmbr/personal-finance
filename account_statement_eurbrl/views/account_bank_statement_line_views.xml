@@ -1,0 +1,40 @@
+<odoo>
+    <record id="view_bank_statement_line_pivot_personal_inherit" model="ir.ui.view">
+        <field name="model">account.bank.statement.line</field>
+        <field
+            name="inherit_id"
+            ref="account_statement_category.view_bank_statement_line_pivot_personal"
+        />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='amount']" position="after">
+                <field name="amount_eur" type="measure" />
+                <field name="amount_brl" type="measure" />
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_bank_statement_line_graph_personal_inherit" model="ir.ui.view">
+        <field name="model">account.bank.statement.line</field>
+        <field
+            name="inherit_id"
+            ref="account_statement_category.view_bank_statement_line_graph_personal"
+        />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='amount']" position="after">
+                <field name="amount_eur" type="measure" />
+                <field name="amount_brl" type="measure" />
+            </xpath>
+        </field>
+    </record>
+
+    <record
+        id="account_statement_category.action_personal_statement_line"
+        model="ir.actions.act_window"
+    >
+        <field name="context">{
+            'pivot_measures': ['amount_eur'],
+            'graph_measure': 'amount_eur',
+            'search_default_filter_this_year': 1
+        }</field>
+    </record>
+</odoo>
