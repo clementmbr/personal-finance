@@ -8,12 +8,8 @@
                 <field name="sequence" widget="handle" />
                 <field name="name" />
                 <field name="parent_id" />
-                <field
-                    name="color"
-                    widget="color_picker"
-                    string=" "
-                    invisible="parent_id"
-                />
+                <field name="background_color" widget="color" invisible="parent_id" />
+                <field name="text_color" widget="color" invisible="parent_id" />
                 <field name="is_expense" />
             </list>
         </field>

@@ -11,7 +11,8 @@ class BankStatementLineCategory(models.Model):
 
     name = fields.Char(required=True)
     sequence = fields.Integer(default=10)
-    color = fields.Integer()
+    background_color = fields.Char()
+    text_color = fields.Char()
     is_expense = fields.Boolean(
         default=True, help="Check for expenses, uncheck for revenues."
     )

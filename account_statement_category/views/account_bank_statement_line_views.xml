@@ -10,9 +10,13 @@
                 <field name="journal_id" />
                 <field name="date" />
                 <field name="payment_ref" />
-                <field name="category_color" widget="color" string=" " readonly="1" />
-                <field name="category_id" string="Category" force_save="1" />
-                <field name="subcategory_id" string="Sub-Category" />
+                <field name="category_background_color" column_invisible="True" />
+                <field name="category_text_color" column_invisible="True" />
+                <field
+                    name="category_id"
+                    options='{"bg_color": "category_background_color", "fg_color": "category_text_color"}'
+                />
+                <field name="subcategory_id" />
                 <field name="is_expense" column_invisible="True" />
                 <field name="amount" sum="Total" />
                 <field name="currency_id" optional="show" />

@@ -12,6 +12,8 @@
     "depends": [
         "account_personal_finance",
         "account_statement_import_sheet_file",
+        # https://github.com/OCA/web/pull/3408
+        "web_tree_dynamic_colored_field",
     ],
     "data": [
         "security/ir.model.access.csv",

@@ -15,11 +15,8 @@ class AccountBankStatementLine(models.Model):
         readonly=False,
         store=True,
     )
-    category_color = fields.Integer(
-        related="category_id.color",
-        string="Color",
-        store=True,
-    )
+    category_background_color = fields.Char(related="category_id.background_color")
+    category_text_color = fields.Char(related="category_id.text_color")
     subcategory_id = fields.Many2one(
         comodel_name="bank.statement.line.category",
         string="Sub-Category",
