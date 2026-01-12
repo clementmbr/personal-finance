@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="action_personal_bank_journal_dashboard" model="ir.actions.act_window">
+        <field name="name">Bank Dashboard</field>
+        <field name="res_model">account.journal</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="view_id" ref="account.account_journal_dashboard_kanban_view" />
+        <field name="domain">[('type', '=', 'bank')]</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Manage your bank journals.
+            </p>
+        </field>
+    </record>
+
+    <menuitem
+        id="menu_personal_finance_root"
+        name="My Finances"
+        sequence="1"
+        web_icon="account_personal_finance,static/description/icon.png"
+    />
+
+    <menuitem
+        id="menu_personal_bank_journal_dashboard"
+        name="Bank Accounts"
+        parent="menu_personal_finance_root"
+        action="action_personal_bank_journal_dashboard"
+        sequence="5"
+    />
+
+    <menuitem
+        id="menu_personal_finance_config"
+        name="Configuration"
+        parent="menu_personal_finance_root"
+        sequence="100"
+    />
+
+    <menuitem
+        id="menu_personal_account_journal"
+        name="Journals"
+        parent="menu_personal_finance_config"
+        action="account.action_account_journal_form"
+        sequence="20"
+    />
+
+    <menuitem
+        id="account_banks_menu_personal"
+        name="Banks"
+        parent="menu_personal_finance_config"
+        sequence="100"
+    />
+
+    <menuitem
+        id="menu_personal_new_bank_account"
+        name="Add a Bank Account"
+        parent="account_banks_menu_personal"
+        action="account.action_new_bank_setting"
+        sequence="10"
+    />
+
+    <menuitem
+        id="menu_personal_res_partner_bank"
+        name="Bank Accounts"
+        parent="account_banks_menu_personal"
+        action="base.action_res_partner_bank_account_form"
+        sequence="20"
+    />
+</odoo>

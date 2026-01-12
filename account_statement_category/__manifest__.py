@@ -10,7 +10,7 @@
     "website": "https://github.com/clementmbr/personal-finance",
     "license": "LGPL-3",
     "depends": [
-        "account",
+        "account_personal_finance",
         "account_statement_import_sheet_file",
     ],
     "data": [

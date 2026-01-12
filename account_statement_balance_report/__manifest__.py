@@ -8,7 +8,7 @@
     "summary": "Monthly bank balances in EUR and BRL",
     "author": "Akretion",
     "website": "https://github.com/clementmbr/personal-finance",
-    "depends": ["account_statement_category"],
+    "depends": ["account_personal_finance"],
     "data": [
         "security/ir.model.access.csv",
         "report/account_statement_report_views.xml",
