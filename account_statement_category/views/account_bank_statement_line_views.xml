@@ -10,6 +10,8 @@
                 <field name="journal_id" />
                 <field name="date" />
                 <field name="payment_ref" />
+                <field name="narration" optional="show" />
+                <field name="analytic_account_id" optional="show" />
                 <field name="category_background_color" column_invisible="True" />
                 <field name="category_text_color" column_invisible="True" />
                 <field
@@ -17,9 +19,10 @@
                     options='{"bg_color": "category_background_color", "fg_color": "category_text_color"}'
                 />
                 <field name="subcategory_id" />
-                <field name="is_expense" column_invisible="True" />
+                <field name="category_type" column_invisible="True" />
                 <field name="amount" sum="Total" />
                 <field name="currency_id" optional="show" />
+                <field name="statement_id" optional="show" />
             </list>
         </field>
     </record>
@@ -29,6 +32,7 @@
         <field name="model">account.bank.statement.line</field>
         <field name="arch" type="xml">
             <pivot string="Financial Analysis" display_quantity="false">
+                <field name="category_type" type="row" />
                 <field name="category_id" type="row" />
                 <field name="subcategory_id" type="row" />
                 <field name="date" interval="month" type="col" />
@@ -59,14 +63,24 @@
                 <filter
                     string="💸 Expenses"
                     name="filter_expenses"
-                    domain="[('is_expense', '=', True)]"
+                    domain="[('category_type', '=', 'expense')]"
                 />
                 <filter
-                    string="💰 Revenues"
-                    name="filter_revenues"
-                    domain="[('is_expense', '=', False)]"
+                    string="💰 Incomes"
+                    name="filter_incomes"
+                    domain="[('category_type', '=', 'income')]"
+                />
+                <filter
+                    string="Last year"
+                    name="last_year"
+                    domain="[('date', '&gt;=', (context_today() - relativedelta(months=12)).strftime('%Y-%m-%d'))]"
                 />
                 <group expand="1" string="Group By">
+                    <filter
+                        string="Category Type"
+                        name="group_by_category_type"
+                        context="{'group_by': 'category_type'}"
+                    />
                     <filter
                         string="Category"
                         name="group_by_category"
@@ -103,6 +117,7 @@
         <field name="view_mode">list,pivot,graph,form</field>
         <field name="view_id" ref="view_bank_statement_line_list_personal" />
         <field name="search_view_id" ref="view_bank_statement_line_search_personal" />
+        <field name="context">{'search_default_last_year': 1}</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Click on the <b>Import Statement</b> button to start.

@@ -34,7 +34,7 @@
         <field name="context">{
             'pivot_measures': ['amount_eur'],
             'graph_measure': 'amount_eur',
-            'search_default_filter_this_year': 1
+            'search_default_last_year': 1
         }</field>
     </record>
 </odoo>

@@ -7,14 +7,20 @@ from odoo import fields, models
 class BankStatementLineCategory(models.Model):
     _name = "bank.statement.line.category"
     _description = "Bank Statement Line Category"
-    _order = "sequence, is_expense desc, name"
+    _order = "sequence, category_type desc, name"
 
     name = fields.Char(required=True)
     sequence = fields.Integer(default=10)
     background_color = fields.Char()
     text_color = fields.Char()
-    is_expense = fields.Boolean(
-        default=True, help="Check for expenses, uncheck for revenues."
+    category_type = fields.Selection(
+        [
+            ("expense", "Expense"),
+            ("income", "Income"),
+            ("transfer", "Transfer"),
+        ],
+        default="expense",
+        required=True,
     )
     parent_id = fields.Many2one(
         comodel_name="bank.statement.line.category",

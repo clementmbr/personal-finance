@@ -10,7 +10,7 @@
                 <field name="parent_id" />
                 <field name="background_color" widget="color" invisible="parent_id" />
                 <field name="text_color" widget="color" invisible="parent_id" />
-                <field name="is_expense" />
+                <field name="category_type" />
             </list>
         </field>
     </record>

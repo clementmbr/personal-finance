@@ -22,11 +22,8 @@ class AccountBankStatementLine(models.Model):
         string="Sub-Category",
         domain="[('parent_id', '=', category_id)]",
     )
-    is_expense = fields.Boolean(
-        related="category_id.is_expense",
-        store=True,
-        string="Is Expense",
-    )
+    category_type = fields.Selection(related="category_id.category_type", store=True)
+    analytic_account_id = fields.Many2one(comodel_name="account.analytic.account")
 
     @api.depends("subcategory_id")
     def _compute_category_id(self):
