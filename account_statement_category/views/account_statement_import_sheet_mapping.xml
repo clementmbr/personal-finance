@@ -1,0 +1,21 @@
+<odoo>
+    <!-- ForgeFlow called her view "tree" but it's a form! -->
+    <record
+        id="view_account_statement_import_sheet_mapping_form_inherit"
+        model="ir.ui.view"
+    >
+        <field name="name">account.statement.import.sheet.mapping.form.inherit</field>
+        <field name="model">account.statement.import.sheet.mapping</field>
+        <field
+            name="inherit_id"
+            ref="account_statement_import_sheet_file.account_statement_import_sheet_mapping_tree"
+        />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='bank_account_column']" position="after">
+                <field name="category_column" />
+                <field name="subcategory_column" />
+                <field name="analytic_account_column" />
+            </xpath>
+        </field>
+    </record>
+</odoo>

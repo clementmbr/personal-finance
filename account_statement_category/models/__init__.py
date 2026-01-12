@@ -3,3 +3,5 @@
 
 from . import bank_statement_line_category
 from . import account_bank_statement_line
+from . import account_statement_import_sheet_mapping
+from . import account_statement_import_sheet_parser
