@@ -151,14 +151,6 @@
     />
 
     <menuitem
-        id="menu_statement_import"
-        name="Import Statement"
-        parent="account_personal_finance.menu_personal_finance_root"
-        action="account_statement_import_file.account_statement_import_action"
-        sequence="20"
-    />
-
-    <menuitem
         id="menu_personal_finance_categories"
         name="Categories"
         parent="account_personal_finance.menu_personal_finance_config"
