@@ -63,6 +63,14 @@
     />
 
     <menuitem
+        id="menu_personal_bank_statements"
+        name="Bank Statements"
+        parent="account_banks_menu_personal"
+        action="account.action_bank_statement_tree"
+        sequence="5"
+    />
+
+    <menuitem
         id="menu_personal_new_bank_account"
         name="Add a Bank Account"
         parent="account_banks_menu_personal"

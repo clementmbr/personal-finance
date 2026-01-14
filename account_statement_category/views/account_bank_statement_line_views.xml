@@ -33,7 +33,11 @@
         <field name="arch" type="xml">
             <pivot string="Financial Analysis" display_quantity="false">
                 <field name="category_type" type="row" />
-                <field name="category_id" type="row" />
+                <field
+                    name="category_id"
+                    type="row"
+                    options='{"bg_color": "category_background_color", "fg_color": "category_text_color"}'
+                />
                 <field name="subcategory_id" type="row" />
                 <field name="date" interval="month" type="col" />
                 <field name="amount" type="measure" />
@@ -121,8 +125,14 @@
         />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='payment_ref']" position="after">
-                <field name="category_id" optional="hide" />
-                <field name="subcategory_id" optional="hide" />
+                <field name="category_background_color" column_invisible="True" />
+                <field name="category_text_color" column_invisible="True" />
+                <field
+                    name="category_id"
+                    optional="show"
+                    options='{"bg_color": "category_background_color", "fg_color": "category_text_color"}'
+                />
+                <field name="subcategory_id" optional="show" />
                 <field name="analytic_account_id" optional="hide" />
             </xpath>
         </field>
