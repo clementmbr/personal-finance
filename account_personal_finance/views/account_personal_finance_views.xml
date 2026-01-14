@@ -5,11 +5,23 @@
         <field name="res_model">account.journal</field>
         <field name="view_mode">kanban,form</field>
         <field name="view_id" ref="account.account_journal_dashboard_kanban_view" />
+        <field name="usage">menu</field>
         <field name="domain">[('type', '=', 'bank')]</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Manage your bank journals.
             </p>
+        </field>
+    </record>
+
+    <record id="view_account_journal_tree_inherit" model="ir.ui.view">
+        <field name="name">account.journal.list.inherit</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_tree" />
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='code']" position="after">
+                <field name="current_statement_balance" optional="hide" />
+            </xpath>
         </field>
     </record>
 

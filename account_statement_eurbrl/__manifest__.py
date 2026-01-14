@@ -14,6 +14,7 @@
     ],
     "data": [
         "views/account_bank_statement_line_views.xml",
+        "views/account_journal_views.xml",
         "views/currency_rate_views.xml",
         "report/account_statement_balance_report.xml",
     ],
