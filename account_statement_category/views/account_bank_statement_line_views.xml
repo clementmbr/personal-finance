@@ -8,7 +8,7 @@
                 <field name="journal_id" />
                 <field name="date" />
                 <field name="payment_ref" />
-                <field name="narration" optional="show" />
+                <field name="narration" optional="hide" />
                 <field name="analytic_account_id" optional="show" />
                 <field name="category_background_color" column_invisible="True" />
                 <field name="category_text_color" column_invisible="True" />
@@ -19,8 +19,8 @@
                 <field name="subcategory_id" />
                 <field name="category_type" column_invisible="True" />
                 <field name="amount" sum="Total" />
-                <field name="currency_id" optional="show" />
-                <field name="statement_id" optional="show" />
+                <field name="currency_id" optional="hide" />
+                <field name="statement_id" optional="hide" />
             </list>
         </field>
     </record>
@@ -110,6 +110,20 @@
                     />
                 </group>
             </search>
+        </field>
+    </record>
+
+    <record id="action_recompute_statement_line_balance" model="ir.actions.server">
+        <field name="name">Refresh Balance</field>
+        <field name="model_id" ref="account.model_account_bank_statement_line" />
+        <field
+            name="binding_model_id"
+            ref="account.model_account_bank_statement_line"
+        />
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">
+            records._compute_running_balance()
         </field>
     </record>
 

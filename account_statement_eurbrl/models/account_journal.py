@@ -39,3 +39,8 @@ class AccountJournal(models.Model):
             rec.current_statement_balance_brl = rec.currency_id._convert(
                 rec.current_statement_balance, brl, rec.company_id, today
             )
+
+    def action_compute_balance_eurbrl(self):
+        """Action to trigger EUR/BRL balance recomputation for selected journals."""
+        self._compute_current_statement_balance()
+        self._compute_eurbrl()
