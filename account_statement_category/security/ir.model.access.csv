@@ -1,2 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_bank_statement_line_category,bank.statement.line.category,model_bank_statement_line_category,base.group_user,1,1,1,1
+account_statement_category.access_account_statement_line_mass_update,access_account_statement_line_mass_update,account_statement_category.model_account_statement_line_mass_update,base.group_user,1,1,1,1

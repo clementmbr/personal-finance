@@ -21,6 +21,7 @@
         "views/bank_statement_line_category_views.xml",
         "views/account_bank_statement_line_views.xml",
         "views/account_statement_import_sheet_mapping.xml",
+        "wizard/update_category_view.xml",
     ],
     "installable": True,
     "application": True,

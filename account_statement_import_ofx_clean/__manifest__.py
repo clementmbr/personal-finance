@@ -11,7 +11,9 @@
     "website": "https://github.com/clementmbr/personal-finance",
     "license": "AGPL-3",
     "depends": ["account_statement_import_ofx"],
-    "data": ["wizard/account_statement_import.xml"],
+    "data": [
+        "wizard/account_statement_import.xml",
+    ],
     "installable": True,
     "application": False,
 }
