@@ -5,8 +5,6 @@
         <field name="model">account.bank.statement.line</field>
         <field name="arch" type="xml">
             <list string="Statement Lines" editable="bottom" create="false">
-                <!-- TODO: add attribute "js_class" to put button "Import Statement"
-                above this list -->
                 <field name="journal_id" />
                 <field name="date" />
                 <field name="payment_ref" />

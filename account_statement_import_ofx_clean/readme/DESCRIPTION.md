@@ -1,0 +1,1 @@
+Remove empty FITID blocks in OFX files (useful for Banco do Brasil OFX files)

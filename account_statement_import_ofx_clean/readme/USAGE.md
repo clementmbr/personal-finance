@@ -1,0 +1,1 @@
+Click on "Clean OFX File" before import
