@@ -43,4 +43,22 @@ class AccountJournal(models.Model):
     def action_compute_journals_current_balance(self):  # pylint: disable=missing-return
         """Action to trigger EUR/BRL balance recomputation for selected journals."""
         super().action_compute_journals_current_balance()
-        self._compute_eurbrl()
+        self.env.add_to_compute(self._fields["current_statement_balance_eur"], self)
+        self.env.add_to_compute(self._fields["current_statement_balance_brl"], self)
+        self.flush_model(
+            ["current_statement_balance_eur", "current_statement_balance_brl"]
+        )
+
+    def action_compute_lines_running_balance(self):  # pylint: disable=missing-return
+        """Action to trigger EUR/BRL running balance recomputation for all the
+        statement lines from the selected journals."""
+        super().action_compute_lines_running_balance()
+
+        for rec in self:
+            lines = self.env["account.bank.statement.line"].search(
+                [("journal_id", "=", rec.id)], order="internal_index asc"
+            )
+            self.env.add_to_compute(lines._fields["running_balance_eur"], lines)
+            self.env.add_to_compute(lines._fields["running_balance_brl"], lines)
+
+            lines.flush_model(["running_balance_eur", "running_balance_brl"])
