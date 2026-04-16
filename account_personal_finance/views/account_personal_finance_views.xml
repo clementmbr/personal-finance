@@ -25,6 +25,28 @@
         </field>
     </record>
 
+    <record id="action_compute_journals_current_balance" model="ir.actions.server">
+        <field name="name">Compute current balances</field>
+        <field name="model_id" ref="account.model_account_journal" />
+        <field name="binding_model_id" ref="account.model_account_journal" />
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">
+            records.action_compute_journals_current_balance()
+        </field>
+    </record>
+
+    <record id="action_compute_lines_running_balance" model="ir.actions.server">
+        <field name="name">Compute statement lines running balances</field>
+        <field name="model_id" ref="account.model_account_journal" />
+        <field name="binding_model_id" ref="account.model_account_journal" />
+        <field name="binding_view_types">list,form</field>
+        <field name="state">code</field>
+        <field name="code">
+            records.action_compute_lines_running_balance()
+        </field>
+    </record>
+
     <menuitem
         id="menu_personal_finance_root"
         name="My Finances"

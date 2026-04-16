@@ -40,7 +40,7 @@ class AccountJournal(models.Model):
                 rec.current_statement_balance, brl, rec.company_id, today
             )
 
-    def action_compute_balance_eurbrl(self):
+    def action_compute_journals_current_balance(self):  # pylint: disable=missing-return
         """Action to trigger EUR/BRL balance recomputation for selected journals."""
-        self._compute_current_statement_balance()
+        super().action_compute_journals_current_balance()
         self._compute_eurbrl()

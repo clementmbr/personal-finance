@@ -12,15 +12,4 @@
             </xpath>
         </field>
     </record>
-
-    <record id="action_recompute_journal_eurbrl_rates" model="ir.actions.server">
-        <field name="name">Compute EUR/BRL balances</field>
-        <field name="model_id" ref="account.model_account_journal" />
-        <field name="binding_model_id" ref="account.model_account_journal" />
-        <field name="binding_view_types">list,form</field>
-        <field name="state">code</field>
-        <field name="code">
-            records.action_compute_balance_eurbrl()
-        </field>
-    </record>
 </odoo>
