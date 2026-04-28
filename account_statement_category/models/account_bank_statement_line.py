@@ -30,3 +30,24 @@ class AccountBankStatementLine(models.Model):
     def _compute_category_id(self):
         for line in self:
             line.category_id = line.subcategory_id.parent_id
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        """Auto fill category for statement lines with the same label"""
+        for vals in vals_list:
+            if vals.get("category_id"):
+                continue
+
+            label = vals.get("payment_ref")
+            if label:
+                past_line = self.search(
+                    [("payment_ref", "=", label), ("category_id", "!=", False)],
+                    limit=1,
+                    order="date desc, id desc",
+                )
+
+                if past_line:
+                    vals["category_id"] = past_line.category_id.id
+                    vals["subcategory_id"] = past_line.subcategory_id.id
+
+        return super().create(vals_list)
