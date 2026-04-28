@@ -11,6 +11,7 @@
     "depends": ["account_personal_finance"],
     "data": [
         "security/ir.model.access.csv",
+        "security/account_statement_report_security.xml",
         "report/account_statement_report_views.xml",
     ],
     "installable": True,

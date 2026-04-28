@@ -16,6 +16,7 @@
             <graph string="Balances Evolution" type="line" sample="1" stacked="True">
                 <field name="date" interval="month" />
                 <field name="balance" type="measure" />
+                <field name="company_id" groups="base.group_multi_company" />
             </graph>
         </field>
     </record>
