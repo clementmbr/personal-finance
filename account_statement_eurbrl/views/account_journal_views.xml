@@ -5,8 +5,16 @@
         <field name="inherit_id" ref="account.view_account_journal_tree" />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='code']" position="after">
-                <field name="current_statement_balance_eur" optional="hide" />
-                <field name="current_statement_balance_brl" optional="hide" />
+                <field
+                    name="current_statement_balance_eur"
+                    optional="hide"
+                    sum="Total EUR"
+                />
+                <field
+                    name="current_statement_balance_brl"
+                    optional="hide"
+                    sum="Total BRL"
+                />
                 <field name="currency_eur_id" column_invisible="True" />
                 <field name="currency_brl_id" column_invisible="True" />
             </xpath>
