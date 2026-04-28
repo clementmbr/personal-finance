@@ -1,56 +1,81 @@
 import base64
-import datetime
 
-import odoo.tests.common as common
+from odoo.tests.common import TransactionCase
 from odoo.tools import file_open
 
 
-class TestOfxFile(common.TransactionCase):
+class TestOfxClean(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.asi_model = cls.env["account.statement.import"]
-        cls.abs_model = cls.env["account.bank.statement"]
-        cls.absl_model = cls.env["account.bank.statement.line"]
-        cur = cls.env.ref("base.USD")
-        bank = cls.env["res.partner.bank"].create(
+        cls.wizard_model = cls.env["account.statement.import"]
+
+        # Ensure USD currency is active
+        usd_curr = cls.env.ref("base.USD")
+        usd_curr.write({"active": True})
+
+        # Setup Bank Account and Journal in USD
+        cls.bank = cls.env["res.partner.bank"].create(
             {
-                "acc_number": "123456",
+                "acc_number": "TEST_USD_123",
                 "partner_id": cls.env.ref("base.main_partner").id,
-                "company_id": cls.env.ref("base.main_company").id,
-                "bank_id": cls.env.ref("base.res_bank_1").id,
+                "currency_id": usd_curr.id,
             }
         )
-        cls.env["account.journal"].create(
+        cls.journal = cls.env["account.journal"].create(
             {
-                "name": "Bank Journal TEST OFX",
-                "code": "BNK12",
+                "name": "Bank USD Test",
+                "code": "BUSD",
                 "type": "bank",
-                "bank_account_id": bank.id,
-                "currency_id": cur.id,
+                "bank_account_id": cls.bank.id,
+                "currency_id": usd_curr.id,
             }
         )
 
-    def test_clean_ofx_file_import(self):
-        ofx_path = "account_statement_import_ofx_clean/tests/test_ofx_clean.ofx"
-        with file_open(ofx_path, "rb") as ofx_file:
-            ofx_bin = ofx_file.read()
-            wizard = self.asi_model.create(
-                {
-                    "statement_file": base64.b64encode(ofx_bin),
-                    "statement_filename": "test_ofx.ofx",
-                    "clean_ofx_file": True,
-                }
-            )
-            wizard.import_file_button()
-            bank_st_record = self.abs_model.search([("name", "like", "123456")])[0]
-            self.assertEqual(bank_st_record.balance_start, 2516.56)
-            self.assertEqual(bank_st_record.balance_end_real, 2156.56)
+    def test_01_remove_empty_fitid(self):
+        """Verify that the transaction with empty FITID is filtered out"""
+        path = "account_statement_import_ofx_clean/tests/test_empty_fitid.ofx"
+        with file_open(path, "rb") as f:
+            content = f.read()
 
-            line = self.absl_model.search(
-                [
-                    ("payment_ref", "=", "Agrolait"),
-                    ("statement_id", "=", bank_st_record.id),
-                ]
-            )[0]
-            self.assertEqual(line.date, datetime.date(2013, 8, 24))
+        wizard = self.wizard_model.create(
+            {
+                "statement_file": base64.b64encode(content),
+                "statement_filename": "empty.ofx",
+                "remove_empty_fitid": True,
+                "deduplicate_fitid_by_amount": False,
+            }
+        )
+        wizard.import_file_button()
+
+        statement = self.env["account.bank.statement"].search(
+            [("name", "=", "TEST_USD_123")], limit=1
+        )
+        # Should only have 1 line (the one with FITID 'VALID1')
+        self.assertEqual(len(statement.line_ids), 1)
+        self.assertEqual(statement.line_ids.payment_ref, "Valid Tx")
+
+    def test_02_deduplicate_fitid_by_amount(self):
+        """Verify that duplicates FITID with different amounts are imported"""
+        path = "account_statement_import_ofx_clean/tests/test_duplicated_fitid.ofx"
+        with file_open(path, "rb") as f:
+            content = f.read()
+
+        wizard = self.wizard_model.create(
+            {
+                "statement_file": base64.b64encode(content),
+                "statement_filename": "dup.ofx",
+                "remove_empty_fitid": False,
+                "deduplicate_fitid_by_amount": True,
+            }
+        )
+        # This triggers the cleaning and then the standard Odoo import
+        wizard.import_file_button()
+
+        statement = self.env["account.bank.statement"].search(
+            [("name", "=", "TEST_USD_123")], limit=1
+        )
+        # All the lines should be present
+        self.assertEqual(
+            len(statement.line_ids), 4, "Duplicate FITID should have been handled"
+        )

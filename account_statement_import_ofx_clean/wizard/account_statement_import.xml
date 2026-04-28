@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
     <record id="account_statement_import_form" model="ir.ui.view">
-        <field
-            name="name"
-        >account.statement.import.form (in account_statement_import_ofx_clean)</field>
+        <field name="name">account.statement.import.form.clean</field>
         <field name="model">account.statement.import</field>
         <field
             name="inherit_id"
@@ -11,8 +9,9 @@
         />
         <field name="arch" type="xml">
             <xpath expr="//field[@name='statement_file']" position="before">
-                <group>
-                    <field name="clean_ofx_file" />
+                <group string="OFX Cleaning Options">
+                    <field name="remove_empty_fitid" />
+                    <field name="deduplicate_fitid_by_amount" />
                 </group>
             </xpath>
         </field>
