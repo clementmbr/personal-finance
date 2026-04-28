@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="view_account_journal_form_inherit_ofx_clean" model="ir.ui.view">
+        <field name="name">account.journal.form.inherit.ofx.clean</field>
+        <field name="model">account.journal</field>
+        <field name="inherit_id" ref="account.view_account_journal_form" />
+        <field name="arch" type="xml">
+            <xpath
+                expr="//group[@name='bank_account_number']//field[@name='bank_statements_source']"
+                position="after"
+            >
+                <field
+                    name="ignore_empty_fitid"
+                    invisible="bank_statements_source != 'file_import_oca'"
+                />
+                <field
+                    name="deduplicate_fitid_by_amount"
+                    invisible="bank_statements_source != 'file_import_oca'"
+                />
+            </xpath>
+        </field>
+    </record>
+</odoo>

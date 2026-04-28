@@ -29,10 +29,12 @@ class TestOfxClean(TransactionCase):
                 "type": "bank",
                 "bank_account_id": cls.bank.id,
                 "currency_id": usd_curr.id,
+                "ignore_empty_fitid": True,
+                "deduplicate_fitid_by_amount": True,
             }
         )
 
-    def test_01_remove_empty_fitid(self):
+    def test_01_ignore_empty_fitid(self):
         """Verify that the transaction with empty FITID is filtered out"""
         path = "account_statement_import_ofx_clean/tests/test_empty_fitid.ofx"
         with file_open(path, "rb") as f:
@@ -42,8 +44,6 @@ class TestOfxClean(TransactionCase):
             {
                 "statement_file": base64.b64encode(content),
                 "statement_filename": "empty.ofx",
-                "remove_empty_fitid": True,
-                "deduplicate_fitid_by_amount": False,
             }
         )
         wizard.import_file_button()
@@ -65,8 +65,6 @@ class TestOfxClean(TransactionCase):
             {
                 "statement_file": base64.b64encode(content),
                 "statement_filename": "dup.ofx",
-                "remove_empty_fitid": False,
-                "deduplicate_fitid_by_amount": True,
             }
         )
         # This triggers the cleaning and then the standard Odoo import

@@ -10,7 +10,7 @@
     "license": "AGPL-3",
     "depends": ["account_statement_import_ofx"],
     "data": [
-        "wizard/account_statement_import.xml",
+        "views/account_journal_views.xml",
     ],
     "installable": True,
 }
