@@ -146,6 +146,7 @@
                 />
                 <field name="subcategory_id" optional="show" />
                 <field name="analytic_account_id" optional="hide" />
+                <field name="note" optional="hide" />
             </xpath>
         </field>
     </record>

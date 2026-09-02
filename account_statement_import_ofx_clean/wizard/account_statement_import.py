@@ -18,6 +18,10 @@ class AccountStatementImport(models.TransientModel):
         """
         Optimized pre-processing: decode once, find journal, and clean if needed.
         """
+
+        if not self.statement_filename.lower().endswith(".ofx"):
+            return super()._parse_file(data_file)
+
         content = data_file.decode("utf-8", errors="ignore")
         journal = self._find_journal_for_clean(content)
 
@@ -39,7 +43,7 @@ class AccountStatementImport(models.TransientModel):
 
         account_number = acc_match.group(1).strip() if acc_match else None
         currency_code = cur_match.group(1).strip() if cur_match else None
-        currency = self._match_currency(currency_code) if currency_code else None
+        currency = self._match_currency(currency_code)
 
         return self._match_journal(account_number, currency)
 
